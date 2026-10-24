@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Modo Carreira - Futebol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0a0f24;
+            --bg-card: #121936;
+            --bg-card-light: #182246;
+            --accent-yellow: #f1c40f;
+            --accent-green: #2ecc71;
+            --accent-blue: #3498db;
+            --text-light: #ffffff;
+            --text-dim: #8a99ad;
+            --border-color: #232f58;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .header-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .club-stars-top {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .star-top {
+            font-size: 22px;
+            color: #2a355c;
+            transition: all 0.3s ease;
+        }
+
+        .star-top.active {
+            color: var(--accent-yellow);
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);
+        }
+
+        .shield-container {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #1a2347;
+            border: 3px solid #2d3b6e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .shield-img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .club-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: #fff;
+            background: transparent;
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .shield-btns {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-small {
+            background: #202b54;
+            color: var(--text-dim);
+            border: 1px solid #31417a;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-small:hover, .btn-small:active {
+            background: #2a3a70;
+            color: #fff;
+        }
+
+        .section-title-bar {
+            background: #0d1430;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            color: #fff;
+            border: 1px solid var(--border-color);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .badge-coin {
+            position: absolute;
+            right: 12px;
+            background: var(--accent-yellow);
+            color: #000;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .trophies-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .trophies-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .trophy-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .trophy-icon {
+            font-size: 24px;
+            color: #2a355c;
+            margin-bottom: 4px;
+        }
+
+        .trophy-icon.won {
+            color: var(--accent-yellow);
+            text-shadow: 0 0 8px rgba(241, 196, 15, 0.5);
+        }
+
+        .trophy-name {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-light);
+            line-height: 1.1;
+        }
+
+        .trophy-sub {
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        .market-card {
+            background: #ffffff;
+            color: #111;
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .division-badge-top {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .division-badge-top .letter {
+            font-weight: 800;
+            font-size: 1.1rem;
+            line-height: 1;
+            color: #0f172a;
+        }
+
+        .division-badge-top .sub {
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .market-card .subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        .market-card .title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 4px 0 8px 0;
+        }
+
+        .market-card .desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            max-width: 90%;
+            margin: 0 auto 15px auto;
+            line-height: 1.3;
+        }
+
+        .market-tags-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tag-group-title {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tag-pill {
+            background: #f1f5f9;
+            color: #94a3b8;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tag-pill.active {
+            background: #e6f4ea;
+            color: #1e7e34;
+            border-color: #a3e0b5;
+        }
+
+        .market-card-footer {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 18px 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .text-input {
+            width: 100%;
+            background: #0d1430;
+            border: 1px solid #f1c40f;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .btn-grid-parallelogram {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .btn-para {
+            background: #182246;
+            color: #fff;
+            border: 1px solid #2e3e75;
+            padding: 8px 2px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transform: skewX(-10deg);
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-para span {
+            display: block;
+            transform: skewX(10deg);
+        }
+
+        .btn-para.active {
+            background: #f1c40f;
+            color: #000;
+            border-color: #f1c40f;
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+        }
+
+        .titles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .btn-title-para {
+            background: #182246;
+            color: #8a99ad;
+            border: 1px solid #2e3e75;
+            padding: 8px 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transform: skewX(-10deg);
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.2s ease;
+            line-height: 1.1;
+        }
+
+        .btn-title-para span {
+            display: block;
+            transform: skewX(10deg);
+        }
+
+        .btn-title-para.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-add {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn-add:active {
+            background: #059669;
+        }
+
+        .btn-clear {
+            background: #334155;
+            color: #cbd5e1;
+        }
+
+        .seasons-history {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .season-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .season-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .season-year {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .season-div-badge {
+            background: #f1c40f;
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .season-details {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.3;
+        }
+
+        .season-details strong {
+            color: #fff;
+        }
+
+        .season-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .btn-icon-small {
+            background: #182246;
+            border: 1px solid #2e3e75;
+            color: #cbd5e1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            cursor: pointer;
+        }
+
+        .btn-icon-small.delete {
+            color: #ef4444;
+            border-color: #7f1d1d;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 400px) {
+            .titles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER DO CLUBE -->
+        <div class="header-section">
+            <div class="club-stars-top" id="topStarsContainer">
+                <span class="star-top">★</span>
+                <span class="star-top">★</span>
+                <span class="star-top">★</span>
+                <span class="star-top">★</span>
+                <span class="star-top">★</span>
+            </div>
+
+            <div class="shield-container">
+                <img src="https://cdn-icons-png.flaticon.com/512/824/824722.png" id="clubShield" class="shield-img" alt="Escudo">
+            </div>
+
+            <input type="text" id="clubNameInput" class="club-name" value="ÍBIS SPORT CLUB" onchange="saveClubName()">
+
+            <div class="shield-btns">
+                <button class="btn-small" onclick="document.getElementById('shieldUpload').click()">Trocar escudo</button>
+                <button class="btn-small" onclick="removeShield()">Remover</button>
+                <input type="file" id="shieldUpload" accept="image/*" style="display: none;" onchange="uploadShield(event)">
+            </div>
+        </div>
+
+        <!-- TROFÉUS -->
+        <div class="trophies-container">
+            <div class="section-title-bar">
+                Troféus
+                <span class="badge-coin" id="trophyCountBadge">0</span>
+            </div>
+            
+            <div class="trophies-grid" id="trophiesGrid">
+                <div class="trophy-item">
+                    <div class="trophy-icon" id="t-copa">★</div>
+                    <div class="trophy-name">Copa do Brasil</div>
+                    <div class="trophy-sub" id="ts-copa">não conquistado</div>
+                </div>
+                <div class="trophy-item">
+                    <div class="trophy-icon" id="t-br">★</div>
+                    <div class="trophy-name">Brasileirão</div>
+                    <div class="trophy-sub" id="ts-br">não conquistado</div>
+                </div>
+                <div class="trophy-item">
+                    <div class="trophy-icon" id="t-lib">★</div>
+                    <div class="trophy-name">Libertadores</div>
+                    <div class="trophy-sub" id="ts-lib">não conquistado</div>
+                </div>
+                <div class="trophy-item">
+                    <div class="trophy-icon" id="t-inter">★</div>
+                    <div class="trophy-name">Intercontinental</div>
+                    <div class="trophy-sub" id="ts-inter">não conquistado</div>
+                </div>
+                <div class="trophy-item">
+                    <div class="trophy-icon" id="t-mundial">★</div>
+                    <div class="trophy-name">Mundial de Clubes</div>
+                    <div class="trophy-sub" id="ts-mundial">não conquistado</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MERCADO LIBERADO -->
+        <div class="section-title-bar">
+            Mercado liberado
+        </div>
+
+        <div class="market-card">
+            <div class="division-badge-top">
+                <span class="letter" id="mDivLetter">D</span>
+                <span class="sub">SÉRIE</span>
+            </div>
+
+            <div class="subtitle">Próxima temporada</div>
+            <div class="title" id="mTitle">Série D para baixo</div>
+            <div class="desc" id="mDesc">Nenhum título na temporada passada ou início de carreira.</div>
+
+            <div class="market-tags-section">
+                <div>
+                    <div class="tag-group-title">Divisões do Brasil</div>
+                    <div class="tags-row">
+                        <div class="tag-pill" id="pill-a">Série A</div>
+                        <div class="tag-pill" id="pill-b">Série B</div>
+                        <div class="tag-pill" id="pill-c">Série C</div>
+                        <div class="tag-pill active" id="pill-d">✓ Série D</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="tag-group-title">Alcance</div>
+                    <div class="tags-row">
+                        <div class="tag-pill active" id="pill-br">✓ Brasil</div>
+                        <div class="tag-pill" id="pill-sa">América do Sul</div>
+                        <div class="tag-pill" id="pill-am">Américas</div>
+                        <div class="tag-pill" id="pill-wo">Mundo</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-card-footer" id="mFooter">2026 · Série D</div>
+        </div>
+
+        <!-- HISTÓRICO DE TEMPORADAS -->
+        <div class="section-title-bar">
+            Temporadas
+        </div>
+
+        <div class="seasons-history" id="seasonsHistory">
+            <!-- Inserido dinamicamente via JS -->
+        </div>
+
+        <!-- FORMULÁRIO NOVA TEMPORADA -->
+        <div class="form-card">
+            <div class="form-card-title" id="formTitle">Nova temporada</div>
+
+            <div class="input-group">
+                <label class="input-label">TEMPORADA</label>
+                <input type="number" id="seasonYear" class="text-input" value="2026">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">DIVISÃO DISPUTADA</label>
+                <div class="btn-grid-parallelogram">
+                    <button class="btn-para" onclick="selectDiv('Série A', this)"><span>Série A</span></button>
+                    <button class="btn-para" onclick="selectDiv('Série B', this)"><span>Série B</span></button>
+                    <button class="btn-para" onclick="selectDiv('Série C', this)"><span>Série C</span></button>
+                    <button class="btn-para active" onclick="selectDiv('Série D', this)"><span>Série D</span></button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">TÍTULOS CONQUISTADOS</label>
+                <div class="titles-grid">
+                    <button class="btn-title-para" onclick="toggleTitle('Série D', this)"><span>Série D</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Série C', this)"><span>Série C</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Série B', this)"><span>Série B</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Brasileirão (Série A)', this)"><span>Brasileirão (Série A)</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Copa do Brasil', this)"><span>Copa do Brasil</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Sul-Americana', this)"><span>Sul-Americana</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Libertadores', this)"><span>Libertadores</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Intercontinental', this)"><span>Intercontinental</span></button>
+                    <button class="btn-title-para" onclick="toggleTitle('Mundial de Clubes', this)"><span>Mundial de Clubes</span></button>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-action btn-add" onclick="addSeason()">Adicionar</button>
+                <button class="btn-action btn-clear" onclick="clearForm()">Limpar</button>
+            </div>
+        </div>
+
+        <div class="footer-note">Carregado e salvo no seu navegador localmente.</div>
+
+    </div>
+
+    <script>
+        let appData = {
+            clubName: "ÍBIS SPORT CLUB",
+            shield: "https://cdn-icons-png.flaticon.com/512/824/824722.png",
+            seasons: []
+        };
+
+        let selectedDiv = "Série D";
+        let selectedTitles = [];
+        let editingIndex = null;
+
+        function init() {
+            const saved = localStorage.getItem('career_data_v2');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch(e){}
+            }
+            
+            document.getElementById('clubNameInput').value = appData.clubName || "ÍBIS SPORT CLUB";
+            if (appData.shield) {
+                document.getElementById('clubShield').src = appData.shield;
+            }
+
+            render();
+        }
+
+        function saveData() {
+            localStorage.setItem('career_data_v2', JSON.stringify(appData));
+        }
+
+        function saveClubName() {
+            appData.clubName = document.getElementById('clubNameInput').value;
+            saveData();
+        }
+
+        function uploadShield(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    appData.shield = e.target.result;
+                    document.getElementById('clubShield').src = appData.shield;
+                    saveData();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeShield() {
+            appData.shield = "https://cdn-icons-png.flaticon.com/512/824/824722.png";
+            document.getElementById('clubShield').src = appData.shield;
+            saveData();
+        }
+
+        function selectDiv(divName, btn) {
+            selectedDiv = divName;
+            document.querySelectorAll('.btn-grid-parallelogram .btn-para').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function toggleTitle(titleName, btn) {
+            if (selectedTitles.includes(titleName)) {
+                selectedTitles = selectedTitles.filter(t => t !== titleName);
+                btn.classList.remove('active');
+            } else {
+                selectedTitles.push(titleName);
+                btn.classList.add('active');
+            }
+        }
+
+        function clearForm() {
+            selectedDiv = "Série D";
+            selectedTitles = [];
+            editingIndex = null;
+            document.getElementById('seasonYear').value = 2026 + appData.seasons.length;
+            
+            document.querySelectorAll('.btn-grid-parallelogram .btn-para').forEach(b => {
+                b.classList.remove('active');
+                if (b.innerText.includes('Série D')) b.classList.add('active');
+            });
+
+            document.querySelectorAll('.btn-title-para').forEach(b => b.classList.remove('active'));
+            document.getElementById('formTitle').innerText = "Nova temporada";
+        }
+
+        function addSeason() {
+            const year = parseInt(document.getElementById('seasonYear').value) || 2026;
+            
+            const seasonObj = {
+                year: year,
+                div: selectedDiv,
+                titles: [...selectedTitles]
+            };
+
+            if (editingIndex !== null) {
+                appData.seasons[editingIndex] = seasonObj;
+            } else {
+                appData.seasons.push(seasonObj);
+            }
+
+            // Ordena por ano
+            appData.seasons.sort((a, b) => a.year - b.year);
+
+            saveData();
+            clearForm();
+            render();
+        }
+
+        function editSeason(index) {
+            editingIndex = index;
+            const s = appData.seasons[index];
+            document.getElementById('seasonYear').value = s.year;
+            
+            selectDiv(s.div, Array.from(document.querySelectorAll('.btn-grid-parallelogram .btn-para')).find(b => b.innerText.includes(s.div)));
+
+            selectedTitles = [...s.titles];
+            document.querySelectorAll('.btn-title-para').forEach(b => {
+                const text = b.innerText.trim();
+                if (selectedTitles.includes(text)) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+
+            document.getElementById('formTitle').innerText = "Editar Temporada " + s.year;
+        }
+
+        function deleteSeason(index) {
+            appData.seasons.splice(index, 1);
+            saveData();
+            render();
+        }
+
+        function render() {
+            // Render History
+            const historyContainer = document.getElementById('seasonsHistory');
+            historyContainer.innerHTML = "";
+
+            appData.seasons.forEach((s, idx) => {
+                const card = document.createElement('div');
+                card.className = "season-card";
+
+                const titlesText = s.titles.length > 0 ? s.titles.join(', ') : 'Nenhum título';
+                const marketRule = calculateMarketRule(s);
+
+                card.innerHTML = `
+                    <div class="season-header">
+                        <span class="season-year">${s.year}</span>
+                        <span class="season-div-badge">${s.div}</span>
+                    </div>
+                    <div class="season-details">
+                        <div><strong>Títulos:</strong> ${titlesText}</div>
+                        <div><strong>Pôde contratar:</strong> ${marketRule.shortRule}</div>
+                    </div>
+                    <div class="season-actions">
+                        <button class="btn-icon-small" onclick="editSeason(${idx})">editar</button>
+                        <button class="btn-icon-small delete" onclick="deleteSeason(${idx})">excluir</button>
+                    </div>
+                `;
+                historyContainer.appendChild(card);
+            });
+
+            // Calculate overall progress & latest market status
+            updateMarketAndStars();
+        }
+
+        function calculateMarketRule(season) {
+            // Regras de Mercado com base nos títulos da temporada
+            let allowedDivs = ['D'];
+            let scope = ['BR'];
+            let titleText = "Série D para baixo";
+            let descText = "Apenas contratações na Série D do Brasil.";
+            let shortRule = "Apenas a Série D";
+
+            const hasTitle = season.titles && season.titles.length > 0;
+
+            if (season.titles.includes('Mundial de Clubes') || season.titles.includes('Intercontinental')) {
+                allowedDivs = ['A', 'B', 'C', 'D'];
+                scope = ['BR', 'SA', 'AM', 'WO'];
+                titleText = "Mercado Mundial Liberado";
+                descText = "Liberado pelo título do Mundial / Intercontinental.";
+                shortRule = "Qualquer jogador do Mundo";
+            } else if (season.titles.includes('Libertadores')) {
+                allowedDivs = ['A', 'B', 'C', 'D'];
+                scope = ['BR', 'SA', 'AM'];
+                titleText = "Américas Liberado";
+                descText = "Liberado pelo título da Libertadores.";
+                shortRule = "Jogadores das Américas";
+            } else if (season.titles.includes('Sul-Americana')) {
+                allowedDivs = ['A', 'B', 'C', 'D'];
+                scope = ['BR', 'SA'];
+                titleText = "América do Sul Liberado";
+                descText = "Liberado pelo título da Sul-Americana.";
+                shortRule = "América do Sul";
+            } else if (season.titles.includes('Brasileirão (Série A)') || season.titles.includes('Copa do Brasil')) {
+                allowedDivs = ['A', 'B', 'C', 'D'];
+                scope = ['BR', 'SA'];
+                titleText = "Série A & América do Sul";
+                descText = "Liberado pelo título nacional de elite.";
+                shortRule = "Série A do Brasil e Sul-América";
+            } else if (season.titles.includes('Série B')) {
+                allowedDivs = ['A', 'B', 'C', 'D'];
+                scope = ['BR'];
+                titleText = "Série A para baixo";
+                descText = "Liberado pelo título da Série B (" + season.year + ").";
+                shortRule = "Até a Série A do Brasil";
+            } else if (season.titles.includes('Série C')) {
+                allowedDivs = ['B', 'C', 'D'];
+                scope = ['BR'];
+                titleText = "Série B para baixo";
+                descText = "Liberado pelo título da Série C (" + season.year + ").";
+                shortRule = "Até a Série B do Brasil";
+            } else if (season.titles.includes('Série D')) {
+                allowedDivs = ['C', 'D'];
+                scope = ['BR'];
+                titleText = "Série C para baixo";
+                descText = "Liberado pelo título da Série D (" + season.year + ").";
+                shortRule = "Até a Série C do Brasil";
+            } else {
+                // Sem títulos
+                if (season.div === 'Série A') {
+                    allowedDivs = ['A', 'B', 'C', 'D'];
+                    shortRule = "Apenas Série A (sem títulos)";
+                    titleText = "Série A Mantida";
+                } else if (season.div === 'Série B') {
+                    allowedDivs = ['B', 'C', 'D'];
+                    shortRule = "Apenas Série B e abaixo";
+                    titleText = "Série B para baixo";
+                } else if (season.div === 'Série C') {
+                    allowedDivs = ['C', 'D'];
+                    shortRule = "Apenas Série C e abaixo";
+                    titleText = "Série C para baixo";
+                } else {
+                    allowedDivs = ['D'];
+                    shortRule = "Apenas a Série D";
+                    titleText = "Série D para baixo";
+                }
+                descText = "Nenhum título na temporada passada.";
+            }
+
+            return { allowedDivs, scope, titleText, descText, shortRule };
+        }
+
+        function updateMarketAndStars() {
+            // Contagem de títulos totais
+            let totalTitles = 0;
+            let titleCounts = {
+                copa: 0,
+                br: 0,
+                lib: 0,
+                inter: 0,
+                mundial: 0
+            };
+
+            appData.seasons.forEach(s => {
+                s.titles.forEach(t => {
+                    totalTitles++;
+                    if (t === 'Copa do Brasil') titleCounts.copa++;
+                    if (t === 'Brasileirão (Série A)') titleCounts.br++;
+                    if (t === 'Libertadores') titleCounts.lib++;
+                    if (t === 'Intercontinental') titleCounts.inter++;
+                    if (t === 'Mundial de Clubes') titleCounts.mundial++;
+                });
+            });
+
+            // Atualiza Estrelas do Clube (Cada 2 títulos ganha 1 estrela, max 5)
+            const starCount = Math.min(5, Math.floor(totalTitles / 2));
+            const topStars = document.querySelectorAll('#topStarsContainer .star-top');
+            topStars.forEach((star, idx) => {
+                if (idx < starCount) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+
+            // Atualiza Troféus
+            document.getElementById('trophyCountBadge').innerText = totalTitles;
+            updateTrophyItem('t-copa', 'ts-copa', titleCounts.copa);
+            updateTrophyItem('t-br', 'ts-br', titleCounts.br);
+            updateTrophyItem('t-lib', 'ts-lib', titleCounts.lib);
+            updateTrophyItem('t-inter', 'ts-inter', titleCounts.inter);
+            updateTrophyItem('t-mundial', 'ts-mundial', titleCounts.mundial);
+
+            // Atualiza Card de Mercado com a última temporada
+            if (appData.seasons.length > 0) {
+                const lastSeason = appData.seasons[appData.seasons.length - 1];
+                const rule = calculateMarketRule(lastSeason);
+
+                document.getElementById('mDivLetter').innerText = lastSeason.div.replace('Série ', '');
+                document.getElementById('mTitle').innerText = rule.titleText;
+                document.getElementById('mDesc').innerText = rule.descText;
+                document.getElementById('mFooter').innerText = (lastSeason.year + 1) + " · " + lastSeason.div;
+
+                // Tags Divisões
+                setTagPill('pill-a', rule.allowedDivs.includes('A'), 'Série A');
+                setTagPill('pill-b', rule.allowedDivs.includes('B'), 'Série B');
+                setTagPill('pill-c', rule.allowedDivs.includes('C'), 'Série C');
+                setTagPill('pill-d', rule.allowedDivs.includes('D'), 'Série D');
+
+                // Tags Alcance
+                setTagPill('pill-br', rule.scope.includes('BR'), 'Brasil');
+                setTagPill('pill-sa', rule.scope.includes('SA'), 'América do Sul');
+                setTagPill('pill-am', rule.scope.includes('AM'), 'Américas');
+                setTagPill('pill-wo', rule.scope.includes('WO'), 'Mundo');
+            } else {
+                document.getElementById('mDivLetter').innerText = "D";
+                document.getElementById('mTitle').innerText = "Série D para baixo";
+                document.getElementById('mDesc').innerText = "Nenhum título na temporada passada ou início de carreira.";
+                document.getElementById('mFooter').innerText = "2026 · Série D";
+
+                setTagPill('pill-a', false, 'Série A');
+                setTagPill('pill-b', false, 'Série B');
+                setTagPill('pill-c', false, 'Série C');
+                setTagPill('pill-d', true, 'Série D');
+
+                setTagPill('pill-br', true, 'Brasil');
+                setTagPill('pill-sa', false, 'América do Sul');
+                setTagPill('pill-am', false, 'Américas');
+                setTagPill('pill-wo', false, 'Mundo');
+            }
+        }
+
+        function setTagPill(id, active, label) {
+            const el = document.getElementById(id);
+            if (active) {
+                el.classList.add('active');
+                el.innerText = '✓ ' + label;
+            } else {
+                el.classList.remove('active');
+                el.innerText = label;
+            }
+        }
+
+        function updateTrophyItem(iconId, subId, count) {
+            const icon = document.getElementById(iconId);
+            const sub = document.getElementById(subId);
+            if (count > 0) {
+                icon.classList.add('won');
+                sub.innerText = count === 1 ? '1 conquistado' : count + ' conquistados';
+            } else {
+                icon.classList.remove('won');
+                sub.innerText = 'não conquistado';
+            }
+        }
+
+        // Inicializar aplicação
+        window.onload = init;
+    </script>
+</body>
+</html>
+
